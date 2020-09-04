@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="FacCigo.Views.Exams.ExamUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FacCigo.Views.Exams"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid Grid.Row="0" Background="White">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Id" VerticalAlignment="Center" Margin="10 10" HorizontalAlignment="Left" FontWeight="DemiBold" />
+                    <TextBox x:Name="Id" VerticalAlignment="Center" Margin="60 10" Text="{Binding Rate}" TextAlignment="Right" IsEnabled="False" Width="100" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Name" VerticalAlignment="Center" Margin="10 10" HorizontalAlignment="Left" FontWeight="DemiBold" />
+                    <TextBox x:Name="Name" VerticalAlignment="Center" Margin="40 10" Text="{Binding Rate}" TextAlignment="Right" Width="200" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Category " VerticalAlignment="Center" Margin="10 10" HorizontalAlignment="Left" FontWeight="DemiBold" />
+                    <ComboBox x:Name="Category" VerticalAlignment="Center" Margin="19 10"  ItemsSource ="{Binding Path=Categories}" SelectedItem="{Binding Path=Category}" DisplayMemberPath="Name"  Width="150" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Price " VerticalAlignment="Center" Margin="10 10" HorizontalAlignment="Left" FontWeight="DemiBold" />
+                    <TextBox x:Name="Price" VerticalAlignment="Center" Margin="44 10"  Width="150" TextAlignment="Right"  Text="{Binding Price}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Currency" VerticalAlignment="Center" Margin="10 10" HorizontalAlignment="Left" FontWeight="DemiBold" />
+                    <TextBox x:Name="Currency" VerticalAlignment="Center" Margin="29 10"  Width="150" TextAlignment="Right"  Text="{Binding CurrencyId}" IsReadOnly="True"/>
+                </StackPanel>
+            </StackPanel>
+
+        </Grid>
+    </Grid>
+</UserControl>

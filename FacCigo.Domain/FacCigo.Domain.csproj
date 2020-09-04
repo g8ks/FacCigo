@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>FacCigo</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Ddd.Domain" Version="3.0.5" />
+    <PackageReference Include="Volo.Abp.Identity.Domain" Version="3.0.5" />
+    <PackageReference Include="Volo.Abp.Identity.Domain.Shared" Version="3.0.5" />
+    <PackageReference Include="Volo.Abp.MultiTenancy" Version="3.0.5" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.Application" Version="3.0.5" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.Domain.Identity" Version="3.0.5" />
+    <PackageReference Include="Volo.Abp.TenantManagement.Application" Version="3.0.5" />
+    <PackageReference Include="Volo.Abp.TenantManagement.Domain" Version="3.0.5" />
+    <PackageReference Include="Volo.Abp.TenantManagement.EntityFrameworkCore" Version="3.0.5" />
+    <ProjectReference Include="..\FacCigo.Domain.Shared\FacCigo.Domain.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

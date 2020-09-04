@@ -1,0 +1,96 @@
+﻿<Window x:Class="FacCigo.Views.Invoices.InvoiceInputDialog"
+        x:Name="invoiceInputDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FacCigo.Views.Invoices"
+         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+         xmlns:fluentui="clr-namespace:FluentUI;assembly=FluentUI"
+         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+         TextElement.FontWeight="Regular"
+         TextElement.FontSize="13"
+         TextOptions.TextFormattingMode="Ideal" 
+         TextOptions.TextRenderingMode="Auto"
+          AutomationProperties.Name="{Binding Title, RelativeSource={RelativeSource Self}}"
+         FontFamily="{materialDesign:MaterialDesignFont}"
+        mc:Ignorable="d"
+        Title="InvoiceInputDialog" Height="600" Width="800" ResizeMode="NoResize" WindowStyle="None" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <ControlTemplate x:Key="ComboBoxTemplate1">
+            <StackPanel>
+                <ItemsPresenter x:Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Contained" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                <Separator/>
+                <Button Content="Nouveau Patient"/>
+            </StackPanel>
+        </ControlTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid>
+            <Grid VerticalAlignment="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Margin="5 20">
+                    <StackPanel Orientation="Vertical" Margin="0 10 0  20">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Id" Margin="5 0" VerticalAlignment="Center"/>
+                            <TextBox x:Name="Id" Text="{Binding Id}" Width="200" Margin="55 0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Patient" Margin="5 5 0 0" VerticalAlignment="Center"/>
+                            <ComboBox Template="{DynamicResource ComboBoxTemplate1}" 
+                                      x:Name="PatientName" ItemsSource="{Binding Patients}" 
+                                      Width="200" Margin="30 10"
+                                      SelectedItem="{Binding Patient,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" 
+                                      DisplayMemberPath="Name"
+                                      />
+
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Date" Margin="5 5 0 0" VerticalAlignment="Center"/>
+                            <DatePickerTextBox x:Name="InvoiceDate" Text="{Binding InvoiceDate}" Width="200" Margin="40 10"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Total" Margin="5 5 0 0" VerticalAlignment="Center"/>
+                            <TextBox x:Name="TotalAmount" Text="{Binding TotalAmount}" 
+                                     Width="200" Margin="40 10" IsEnabled="True"/>
+                            <TextBlock/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+                <DataGrid Name="dgInvoicelines" Grid.Row="1" 
+                          AutoGenerateColumns="False" HorizontalAlignment="Stretch" Margin="50" Width="auto" MinWidth="350">
+                    <DataGrid.Columns>
+                        <DataGridComboBoxColumn ItemsSource="{Binding Exams}" Header="RefNo" MinWidth="50"/>
+                        <DataGridComboBoxColumn  ItemsSource="{Binding Exams}" Header="Examen" MinWidth="200"/>
+                        <DataGridTextColumn  Binding="{Binding Amount}" Header="Montant" MinWidth="100"/>
+                    </DataGrid.Columns>
+
+
+                </DataGrid>
+            </Grid>
+                <StackPanel Orientation="Horizontal" Margin="0,4,0,0" VerticalAlignment="Bottom">
+                <Button Content="Annuler" HorizontalAlignment="Right" Margin="550 0 0 10" IsCancel="True"/>
+                <Button Content="Enregistrer" HorizontalAlignment="Right" Margin="20 0 20 10 " Style="{StaticResource FabricPrimaryButtonStyle}"
+                    Command="{Binding CreateCommand}" 
+                    CommandParameter="{Binding ElementName=invoiceInputDialog}"
+                    IsDefault="True" />
+            </StackPanel>
+        </Grid>
+        <Rectangle VerticalAlignment="Top" Height="3" Stroke="{x:Null}" 
+                   Fill="#3C8DBC" Margin="0,0,0,0"
+                   PreviewMouseDown="WindowDraggableArea_OnPreviewMouseDown"/>
+        <Rectangle
+            Stroke="{x:Null}" Fill="#3C8DBC" Margin="0,0,0,0"
+            VerticalAlignment="Bottom" Width="0.5" />
+        <Rectangle
+            Stroke="{x:Null}" Fill="#3C8DBC" Margin="0,0,0,0"
+            HorizontalAlignment="Left" Width="0.5" x:Name="WindowResizeLeft" />
+        <Rectangle
+            Stroke="{x:Null}" Fill="#3C8DBC" Margin="0,0,0,0"
+            HorizontalAlignment="Right" Width="0.5" x:Name="WindowResizeRight" />
+
+    </Grid>
+</Window>

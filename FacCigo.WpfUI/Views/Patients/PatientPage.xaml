@@ -1,0 +1,124 @@
+﻿<Page x:Class="FacCigo.PatientPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:FacCigo"
+       xmlns:fluentui="clr-namespace:FluentUI;assembly=FluentUI"
+      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+      xmlns:prism="http://prismlibrary.com/"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="PatientPage">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0" MinWidth="800">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="White"  Margin="0 0 0 0" HorizontalAlignment="Stretch" >
+                    <ToolBarTray DockPanel.Dock="Right" Margin="10"  HorizontalAlignment="Right" >
+                        <ToolBar BorderBrush="LightGray" Margin="160 0 0 0">
+                          
+                            <Button  x:Name="btnDelete" HorizontalAlignment="Right" Margin="10" Style="{StaticResource FabricButtonStyle}" Command="{Binding DeleteCommand}">
+                                <fluentui:FabricIcon Icon="Delete"/>
+                            </Button>
+                            <Button  x:Name="btnEdit" HorizontalAlignment="Right" Margin="10" Style="{StaticResource FabricButtonStyle}" Command="{Binding UpdateCommand}">
+                                <fluentui:FabricIcon Icon="Edit"/>
+                            </Button>
+                            <Button x:Name="btnCreate" Style="{StaticResource FabricPrimaryButtonStyle}" IsDefault="True" Margin="10" Command="{Binding CreateCommand}" >
+                                <fluentui:FabricIcon Icon="AddIn"/>
+                            </Button>
+                         
+                        </ToolBar>
+                    </ToolBarTray>
+
+
+                </StackPanel>
+                <Border BorderThickness="0 2 0 0" Background="LightGray">
+                    <ListView ItemsSource="{Binding Items,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MinWidth="500">
+                        <ListView.View>
+                            <GridView >
+                                <GridViewColumn Header="Id" Width="50" DisplayMemberBinding="{Binding Id}"  />
+                                <GridViewColumn Header="Nom" Width="250" DisplayMemberBinding="{Binding Name ,UpdateSourceTrigger=PropertyChanged}" />
+                                <GridViewColumn Header="Telephone" Width="80" DisplayMemberBinding="{Binding PhoneNumber}" />
+
+                            </GridView>
+                        </ListView.View>
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Vertical"/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                        <i:Interaction.Triggers>
+                            <!-- This event trigger will execute the action when the corresponding event is raised by the ListBox. -->
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <!-- This action will invoke the selected command in the view model and pass the parameters of the event to it. -->
+                                <prism:InvokeCommandAction Command="{Binding SelectedCommand}" TriggerParameterPath="AddedItems" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ListView>
+                </Border>
+            </DockPanel>
+
+        </Grid>
+        <GridSplitter  VerticalAlignment="Stretch" HorizontalAlignment="Right" Margin="2 0 0 0" Width="3" Background="LightGray"/>
+        <Grid Grid.Column="1" x:Name="details" DataContext="{Binding SelectedItem,UpdateSourceTrigger=PropertyChanged}" >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="100*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Vertical" Margin="0 50">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Id" VerticalAlignment="Center" Margin="10 10" 
+                                   HorizontalAlignment="Left" FontWeight="DemiBold" Grid.ColumnSpan="1" />
+                        <Border BorderThickness="0.2 0.2 0 0.2" BorderBrush="Black" Grid.ColumnSpan="2" >
+                            <TextBlock x:Name="Id" VerticalAlignment="Center" Margin="60 10" 
+                                   Text="{Binding Id}" TextAlignment="Left" IsEnabled="False"
+                                   Width="200"  Grid.ColumnSpan="2" />
+                        </Border>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Nom" VerticalAlignment="Center" Margin="10 10" 
+                                   HorizontalAlignment="Left" FontWeight="DemiBold" Grid.ColumnSpan="1" />
+                        <Border BorderThickness="0.2 0.2 0 0.2" BorderBrush="Black" Grid.ColumnSpan="2" >
+                            <TextBlock x:Name="Name" VerticalAlignment="Center" 
+                                   Margin="30 10" Text="{Binding Name}" 
+                                   TextAlignment="Left" Width="200" Grid.ColumnSpan="2"  />
+                        </Border>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Date Naissance" VerticalAlignment="Center"
+                                   Margin="10 10" HorizontalAlignment="Left" FontWeight="DemiBold" Grid.ColumnSpan="1" />
+
+                        <Border BorderThickness="0.2 0.2 0 0.2" BorderBrush="Black" Grid.ColumnSpan="2" >
+                            <TextBlock x:Name="BirthDate" VerticalAlignment="Center" Margin="44 10"  Width="50"
+                                   TextAlignment="Left"  Text="{Binding BirthDate}" Grid.ColumnSpan="2" />
+                        </Border>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Telephone" VerticalAlignment="Center" 
+                                   Margin="10 10" HorizontalAlignment="Left" FontWeight="DemiBold"  Grid.ColumnSpan="1" />
+                        <Border BorderThickness="0 0.2 0.2 0.2" BorderBrush="Black" Grid.ColumnSpan="2" >
+                            <TextBlock x:Name="PhoneNumber" VerticalAlignment="Center" 
+                                   Margin="40 10" Text="{Binding PhoneNumber}" TextAlignment="Left" Width="200" Grid.ColumnSpan="2" />
+                        </Border>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Addresse" VerticalAlignment="Top" 
+                                   Margin="10 10" HorizontalAlignment="Left" FontWeight="DemiBold" Grid.ColumnSpan="1"  />
+                        <Border BorderThickness="0 0.2 0.2 0.2" BorderBrush="Black" Grid.ColumnSpan="2"  >
+                            <TextBlock x:Name="Address" VerticalAlignment="Center" 
+                                   Margin="19 10" Text="{Binding Address}"  Width="150" Height="50" Grid.ColumnSpan="2"  />
+                        </Border>
+                    </StackPanel>
+                    
+
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

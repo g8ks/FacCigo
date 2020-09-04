@@ -1,0 +1,41 @@
+﻿<Window x:Class="FacCigo.ExchangeRateAdd"
+        x:Name="ExchangeDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FacCigo"
+        xmlns:fluentui="clr-namespace:FluentUI;assembly=FluentUI"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto"
+        AutomationProperties.Name="{Binding Title, RelativeSource={RelativeSource Self}}"
+        FontFamily="{materialDesign:MaterialDesignFont}"
+        mc:Ignorable="d"
+        Title="ExchangeRateAdd" Height="170" Width="500" ShowInTaskbar="False" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="{Binding ErrorText}" Margin="75 10" HorizontalAlignment="Center" FontWeight="DemiBold" Foreground="Red"/>
+                <TextBlock Text="Entrez le Taux pour 1 USD" VerticalAlignment="Center" Margin="75 10" HorizontalAlignment="Left" FontWeight="DemiBold" />
+                <TextBox x:Name="Rate" VerticalAlignment="Center" Margin="75 0" Text="{Binding Rate}" TextAlignment="Right" 
+                          />
+            </StackPanel>
+        </Grid>
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Button Content="Annuler" HorizontalAlignment="Right" Margin="300 0 0 0" IsCancel="True"/>
+            <Button Content="Enregistrer" HorizontalAlignment="Right" Margin="10 0 0 0 " Style="{StaticResource FabricPrimaryButtonStyle}"
+                    Command="{Binding CreateCommand}" IsDefault="True"
+                    CommandParameter="{Binding ElementName=ExchangeDialog}"/>
+        </StackPanel>
+        <Rectangle VerticalAlignment="Top" Height="2" Stroke="{x:Null}" Fill="#3C8DBC" Margin="0,0,0,0"
+            PreviewMouseDown="WindowDraggableArea_OnPreviewMouseDown"/>
+    </Grid>
+</Window>

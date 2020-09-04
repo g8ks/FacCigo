@@ -1,0 +1,36 @@
+﻿<Window x:Class="FacCigo.Views.ETL.CsvReaderDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FacCigo.ViewModels.ETL"
+        xmlns:fluentui="clr-namespace:FluentUI;assembly=FluentUI"
+        x:Name="csvReaderDialog"
+        mc:Ignorable="d"
+        Title="CsvReaderDialog" Height="450" Width="800" ResizeMode="NoResize" WindowStyle="None" WindowStartupLocation="CenterOwner">
+    <Grid>
+        <Grid>
+            <DataGrid  ItemsSource="{Binding Models}" VerticalAlignment="Top" Margin="0 2 0 0" AutoGenerateColumns="True"/>
+            <StackPanel Orientation="Horizontal" Margin="0,4,0,2" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+                <Button Content="Importer" HorizontalAlignment="Left" Margin="0 0 230 0" Command="{Binding ImportCommand}"/>
+                <Button Content="Annuler" HorizontalAlignment="Right" Margin="250 0 0 10" IsCancel="True"/>
+                <Button Content="Enregistrer" HorizontalAlignment="Right" Margin="20 0 20 10 " Style="{StaticResource FabricPrimaryButtonStyle}"
+                    Command="{Binding CreateCommand}" 
+                    CommandParameter="{Binding ElementName=csvReaderDialog}"
+                    IsDefault="True" />
+            </StackPanel>
+        </Grid>
+        <Rectangle VerticalAlignment="Top" Height="3" Stroke="{x:Null}" 
+                   Fill="#3C8DBC" Margin="0,0,0,0"
+                   PreviewMouseDown="WindowDraggableArea_OnPreviewMouseDown"/>
+        <Rectangle
+            Stroke="{x:Null}" Fill="#3C8DBC" Margin="0,0,0,0"
+            VerticalAlignment="Bottom" Width="0.5" />
+        <Rectangle
+            Stroke="{x:Null}" Fill="#3C8DBC" Margin="0,0,0,0"
+            HorizontalAlignment="Left" Width="0.5" x:Name="WindowResizeLeft" />
+        <Rectangle
+            Stroke="{x:Null}" Fill="#3C8DBC" Margin="0,0,0,0"
+            HorizontalAlignment="Right" Width="0.5" x:Name="WindowResizeRight" />
+    </Grid>
+</Window>

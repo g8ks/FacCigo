@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>FacCigo</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.AutoMapper" Version="3.0.5" />
+    <PackageReference Include="Volo.Abp.Ddd.Application" Version="3.0.5" />
+    <ProjectReference Include="..\FacCigo.Application.Contracts\FacCigo.Application.Contracts.csproj" />
+    <ProjectReference Include="..\FacCigo.Domain.Shared\FacCigo.Domain.Shared.csproj" />
+    <ProjectReference Include="..\FacCigo.Domain\FacCigo.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
