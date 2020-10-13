@@ -27,7 +27,7 @@ namespace FacCigo
         [StringLength(PatientConsts.MaxPhoneNumberLength)]
         public virtual string PhoneNumber { set; get; }
         
-        public virtual List<InvoiceDto> Invoices { set; get; }
+        public virtual IList<InvoiceDto> Invoices { set; get; }
 
         public string Name { set; get; }
     }

@@ -52,23 +52,25 @@ namespace FacCigo
                 .Ignore(c => c.ConcurrencyStamp)
                 .IgnoreFullAuditedObjectProperties();
 
-            CreateMap<Invoice,InvoiceDto>().ForMember(dest => dest.PatientName, opt => opt.MapFrom(x => x.Patient.Name))
+            CreateMap<Invoice,InvoiceDto>()
+                         .ForMember(dest => dest.PatientName, opt => opt.MapFrom(x => x.Patient.Name))
                          .ForMember(dest => dest.Rate, opt => opt.MapFrom(x => x.ExchangeRate.Rate))
                          .ForMember(dest=>dest.TotalAmount,opt=>opt.MapFrom(x=>x.InvoiceLines.Sum(c=>c.Amount)*x.ExchangeRate.Rate));
             CreateMap<InvoiceLine, InvoiceLineDto>()
                 .ForMember(dest=>dest.ConvertedAmount,opt=>opt.MapFrom(x=>x.Amount*x.Invoice.ExchangeRate.Rate));
-            CreateMap<List<Invoice>, List<InvoiceDto>>();
-            CreateMap<IList<Exam>, IList<ExamDto>>();
+           
             CreateMap<ExchangeRate, ExchangeRateDto>();
             CreateMap<Category, CategoryDto>();
             CreateMap<CategoryDto, Category>()
                 .Ignore(c=>c.ParentCategory)
                 .Ignore(c=>c.Exams)
                 .Ignore(c=>c.SubCategories);
-            CreateMap<IList<InvoiceLine>, IList<InvoiceLineDto>>();
-            CreateMap<IList<ExchangeRate>, IList<ExchangeRateDto>>();
-            CreateMap<IList<Payment>, IList<PaymentDto>>();
-            CreateMap<IList<Category>, IList<CategoryDto>>();
+            //CreateMap<IList<InvoiceLine>, IList<InvoiceLineDto>>();
+            //CreateMap<IList<ExchangeRate>, IList<ExchangeRateDto>>();
+            //CreateMap<IList<Payment>, IList<PaymentDto>>();
+            //CreateMap<IList<Category>, IList<CategoryDto>>();
+            //CreateMap<IList<Invoice>, IList<InvoiceDto>>();
+            //CreateMap<IList<Exam>, IList<ExamDto>>();
         }
     }
 }

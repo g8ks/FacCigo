@@ -6,7 +6,8 @@ using Volo.Abp.Application.Services;
 
 namespace FacCigo
 {
-    public interface IInvoiceAppService:IApplicationService
+    public interface IInvoiceAppService : ICrudAppService<InvoiceDto, Guid, InvoiceGetListInput, InvoiceInput>,IApplicationService
     {
+        Task<string> NextReferenceNo(int year);
     }
 }

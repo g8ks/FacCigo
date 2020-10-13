@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FacCigo.ViewModels.Invoices
 {
-    interface IInvoicesViewModel
+     public interface IInvoicesViewModel
     {
     }
 }

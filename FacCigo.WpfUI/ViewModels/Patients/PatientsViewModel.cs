@@ -43,7 +43,7 @@ namespace FacCigo.ViewModels.Patients
         public PatientDto SelectedItem
         {
             get { return _selectedItem; }
-            private set { SetProperty(ref _selectedItem, value); }
+            set { SetProperty(ref _selectedItem, value); }
         }
         public ObservableCollection<PatientDto> Items { get { return _items; } private set { SetProperty(ref _items, value); } }
         public DelegateCommand<object[]> SelectedCommand { get; private set; }
@@ -66,12 +66,14 @@ namespace FacCigo.ViewModels.Patients
         }
         private void Update()
         {
+            if (SelectedItem == null) return;
             var dialog = _serviceProvider.GetRequiredService<PatientInputDialog>();
             dialog.setModel(SelectedItem);
             dialog.ShowDialog();
         }
         private void Delete()
         {
+            if (SelectedItem == null) return;
             Guid id = SelectedItem.Id;
             AppService.DeleteAsync(id);
             EventAggregator.GetEvent<PatientDeletedEvent>().Publish(id);

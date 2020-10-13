@@ -14,7 +14,7 @@
               TextOptions.TextRenderingMode="Auto"
               AutomationProperties.Name="{Binding Title, RelativeSource={RelativeSource Self}}"
               FontFamily="{materialDesign:MaterialDesignFont}"
-             mc:Ignorable="d" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" MaxWidth="500">
+             mc:Ignorable="d" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" MinWidth="500"  MaxWidth="500" MaxHeight="500" MinHeight="500">
     <Grid>
         <Grid>
             <Grid.RowDefinitions>

@@ -24,9 +24,9 @@ namespace FacCigo
   
         public virtual InvoiceStatus Status { get; protected set; } = InvoiceStatus.PENDING;
 
-        public virtual List<InvoiceLine> InvoiceLines { get; protected set; }
+        public virtual IList<InvoiceLine> InvoiceLines { get; protected set; }
 
-        public virtual Collection<Payment> Payments { set; get; }
+        public virtual IList<Payment> Payments { set; get; }
 
         public virtual string CurrencyId { get; protected set; }
         public Currency Currency { get; set; }

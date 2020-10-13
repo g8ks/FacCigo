@@ -4,17 +4,162 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:FacCigo"
+      xmlns:converter="clr-namespace:FacCigo.Converters"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
+      xmlns:fluentui="clr-namespace:FluentUI;assembly=FluentUI"
+      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+      xmlns:prism="http://prismlibrary.com/"
       Title="InvoicePage">
-
+    <Page.Resources>
+        <converter:CurrencyConverter x:Key="currencyConverter"/>
+    </Page.Resources>
     <Grid>
-        <Grid>
-            <Grid.RowDefinitions >
-                <RowDefinition Height="50"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0" MinWidth="800">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="White"  Margin="0 0 0 0" HorizontalAlignment="Stretch" >
+                    <ToolBarTray DockPanel.Dock="Right" Margin="10"  HorizontalAlignment="Right" >
+                        <ToolBar BorderBrush="LightGray" Margin="0 0 0 0">
+                            <Button  x:Name="btnPrint" HorizontalAlignment="Right" Margin="10" Style="{StaticResource FabricButtonStyle}" Click="btnPrint_Click">
+                                <fluentui:FabricIcon Icon="Print"/>
+                            </Button>
+                            <Button  x:Name="btnDelete" HorizontalAlignment="Right" Margin="10" Style="{StaticResource FabricButtonStyle}" Command="{Binding DeleteCommand}">
+                                <fluentui:FabricIcon Icon="Delete"/>
+                            </Button>
+                            <Button  x:Name="btnEdit" HorizontalAlignment="Right" Margin="10" Style="{StaticResource FabricButtonStyle}" Command="{Binding UpdateCommand}">
+                                <fluentui:FabricIcon Icon="Edit"/>
+                            </Button>
+                            <Button x:Name="btnCreate" Style="{StaticResource FabricPrimaryButtonStyle}" IsDefault="True" Margin="10" Command="{Binding CreateCommand}" >
+                                <fluentui:FabricIcon Icon="AddIn"/>
+                            </Button>
+                            <fluentui:FabricSplitButton Content="Filtrer" HorizontalAlignment="Right" Margin="10">
+                                <fluentui:FabricSplitButton.Menu>
+                                    <ContextMenu>
+                                        <MenuItem Header="Category"/>
+                                        <MenuItem Header="Date"/>
+                                    </ContextMenu>
+                                </fluentui:FabricSplitButton.Menu>
+                            </fluentui:FabricSplitButton>
+                        </ToolBar>
+                    </ToolBarTray>
+
+
+                </StackPanel>
+                <Border BorderThickness="0 2 0 0" Background="LightGray">
+                    <ListView ItemsSource="{Binding Items,UpdateSourceTrigger=PropertyChanged}"
+                              HorizontalAlignment="Stretch" 
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                              SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                              MinWidth="600">
+                        <ListView.View>
+                            <GridView >
+                                <GridViewColumn Header="RefNo" Width="100" DisplayMemberBinding="{Binding ReferenceNo}"  />
+                                <GridViewColumn Header="Date" Width="100" DisplayMemberBinding="{Binding InvoiceDate, StringFormat=d, ConverterCulture=fr-CD}"  />
+                                <GridViewColumn Header="Nom" Width="250" DisplayMemberBinding="{Binding PatientName ,UpdateSourceTrigger=PropertyChanged}" />
+                                <GridViewColumn Header="Total" Width="80" DisplayMemberBinding="{Binding TotalAmount ,Converter={StaticResource currencyConverter}}" />
+
+                            </GridView>
+                        </ListView.View>
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Vertical"/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                        <i:Interaction.Triggers>
+                            <!-- This event trigger will execute the action when the corresponding event is raised by the ListBox. -->
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <!-- This action will invoke the selected command in the view model and pass the parameters of the event to it. -->
+                                <prism:InvokeCommandAction Command="{Binding SelectedCommand}" TriggerParameterPath="AddedItems" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ListView>
+                </Border>
+            </DockPanel>
+
         </Grid>
-        
+        <GridSplitter  VerticalAlignment="Stretch" HorizontalAlignment="Right" Margin="2 0 0 0" Width="3" Background="LightGray"/>
+        <Grid Grid.Column="1" x:Name="details" >
+            <FlowDocumentPageViewer DataContext="{Binding SelectedItem}" x:Name="Viewer">
+                <FlowDocument x:Name="Doc" ColumnWidth="900">
+                    <Paragraph LineHeight="1" FontSize="1"  BorderThickness="0 1 0 0" BorderBrush="Black">
+                        <LineBreak/>
+                    </Paragraph >
+                    <Section>
+                        <BlockUIContainer>
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontSize="15" Margin="0" FontWeight="Bold">CABINET D'IMAGERIE DE LA GOMBE "C.I.G.O"</TextBlock>
+                                    <TextBlock Margin="20 0 0 0" FontSize="12">Kinshasa, le</TextBlock>
+                                    <TextBlock Text="{Binding InvoiceDate , StringFormat=d, ConverterCulture=fr-CD}" FontSize="12" Margin="4 0 0 0"/>
+                                </StackPanel>
+                                <StackPanel >
+                                    <TextBlock >Dr. Mbongo Bahati</TextBlock>
+                                    <TextBlock Margin="0 5 0 0" FontStyle="Italic" TextAlignment="Left" FontSize="14" Foreground="Gray">
+                                      1525,Boulevard du 30 Juin (Immeuble ex-Shell)</TextBlock>
+                                    <TextBlock FontStyle="Italic" TextAlignment="Left" FontSize="14" Foreground="Gray">
+                                       Kinshasa Gombe (RDC)</TextBlock>
+                                </StackPanel>
+
+                            </StackPanel>
+                        </BlockUIContainer>
+                    </Section>
+                    <Paragraph LineHeight="1" FontSize="1"  BorderThickness="0 1 0 0" BorderBrush="Black">
+                        <LineBreak/>
+                    </Paragraph >
+                    <Section>
+                        <BlockUIContainer>
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <TextBlock FontStyle="Normal" TextDecorations="Underline">
+                                        <Run Text="Recu No "/>
+                                        <Run Text="{Binding ReferenceNo}"></Run>
+                                        
+                                    </TextBlock>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Patient(e) : " FontSize="14"  Margin="0 10 0 10"/>
+                                    <TextBlock Text="{Binding PatientName}" FontSize="14" Margin="0 10 0 10"/>
+                                </StackPanel>
+                            </StackPanel>
+                           
+                            
+                        </BlockUIContainer>
+                    </Section>
+                    <Paragraph LineHeight="1" FontSize="1"  BorderThickness="0 1 0 0" BorderBrush="Black">
+                        <LineBreak/>
+                    </Paragraph >
+                    <BlockUIContainer>
+                        <ListView BorderThickness="0" ItemsSource="{Binding Path=InvoiceLines}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Examen" DisplayMemberBinding="{Binding Path=Exam.Name}" Width="400" />
+                                    <GridViewColumn Header="Montant" 
+                                                    DisplayMemberBinding="{Binding ConvertedAmount,Converter={StaticResource currencyConverter}}"
+                                                    Width="120" />
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </BlockUIContainer>
+                    <Paragraph LineHeight="1" FontSize="1"  BorderThickness="0 1 0 0" BorderBrush="Black">
+                        <LineBreak/>
+                    </Paragraph >
+                    <Section>
+                        <BlockUIContainer>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 5 30 5">
+                                <TextBlock FontSize="16" Text="Net a Payer:    "/>
+                                <TextBlock Text="{Binding TotalAmount, Converter={StaticResource currencyConverter}}"/>
+                            </StackPanel>
+                        </BlockUIContainer>
+                    </Section>
+                    <Paragraph LineHeight="1" FontSize="1"  BorderThickness="0 1 0 0" BorderBrush="Black">
+                        <LineBreak/>
+                    </Paragraph >
+                </FlowDocument>
+            </FlowDocumentPageViewer>
+        </Grid>
     </Grid>
 </Page>

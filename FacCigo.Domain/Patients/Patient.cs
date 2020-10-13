@@ -1,5 +1,6 @@
 ﻿using JetBrains.Annotations;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using Volo.Abp.Domain.Entities.Auditing;
@@ -21,7 +22,7 @@ namespace FacCigo
 
         public virtual string PhoneNumber { set; get; }
 
-        public Collection<Invoice> Invoices { set; get; }
+        public IList<Invoice> Invoices { set; get; }
         [NotMapped]
         public string Name { get { return FirstName + ' ' + LastName; } }
     }

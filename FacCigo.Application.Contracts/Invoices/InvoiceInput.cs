@@ -17,7 +17,7 @@ namespace FacCigo
         [Required]
         public virtual DateTime InvoiceDate { get; set; }
         public virtual InvoiceStatus Status { get; set; } = InvoiceStatus.PENDING;
-        public virtual List<InvoiceLineInput> InvoiceLines { get; set; }
+        public virtual IList<InvoiceLineInput> InvoiceLines { get; set; }
     
     }
     public class InvoiceLineInput

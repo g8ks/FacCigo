@@ -20,8 +20,9 @@ namespace FacCigo.Views.Patients
     /// </summary>
     public partial class PatientInputDialog : Window,ICloseable,ITransientDependency
     {
-        public PatientInputDialog()
+        public PatientInputDialog(IPatientInputViewModel  viewModel)
         {
+            DataContext = viewModel;
             InitializeComponent();
         }
         public void setModel(PatientDto dto)

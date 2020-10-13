@@ -12,6 +12,7 @@ namespace FacCigo.Models
         public string Name { get; set; }
         public decimal Price { get; set; }
         public Guid   CategoryId { get; set; }
+        public string Category { get; set; }
         public string CurrencyId { get; set; }
 
         public ExamInput ToInput()

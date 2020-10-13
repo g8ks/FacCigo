@@ -47,7 +47,7 @@ namespace FacCigo.ViewModels.Exams
             AppService = examAppService;
             CreateCommand = new DelegateCommand<ICloseable>(Create);
             Categories = new ObservableCollection<CategoryDto>();
-            Categories.AddRange(CategoryService.GetListAsync(new PagedAndSortedResultRequestDto() {}).Result.Items);
+            Categories.AddRange(CategoryService.GetListAsync(new PagedAndSortedResultRequestDto()).Result.Items);
             Currency = SettingProvider.GetOrNullAsync(FacCigoSettings.PivotCurrency).Result;
         }
         public DelegateCommand<ICloseable> CreateCommand { get; private set; }

@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using FacCigo.ViewModels.Invoices;
+using System;
+using System.Drawing.Printing;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Volo.Abp.DependencyInjection;
+
 
 namespace FacCigo
 {
@@ -19,9 +14,33 @@ namespace FacCigo
     /// </summary>
     public partial class InvoicePage : Page, ITransientDependency
     {
-        public InvoicePage()
+        public InvoicePage(IInvoicesViewModel viewModel)
         {
+            DataContext = viewModel;
             InitializeComponent();
+        }
+        public void Print()
+        {
+
+        }
+
+        private void btnPrint_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Create a PrintDialog
+                PrintDialog printDlg = new PrintDialog();
+                IDocumentPaginatorSource idpSource = Doc;
+                if (printDlg.ShowDialog() == true)
+                {
+
+                    printDlg.PrintDocument(idpSource.DocumentPaginator, "Impression Facture");
+                }
+            } catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message+"\n"+ex.StackTrace + "\n" +ex.Source+"\n");
+            }
+           
         }
     }
 }

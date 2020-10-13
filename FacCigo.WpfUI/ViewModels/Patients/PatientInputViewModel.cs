@@ -26,7 +26,7 @@ namespace FacCigo.ViewModels.Patients
         private string _errorText;
         private readonly IEventAggregator EventAggregator;
         private readonly IPatientAppService AppService;
-        public bool NewExam { get; private set; } = true;
+        public bool NewPatient { get; private set; } = true;
         private PatientDto updated;
         public PatientInputViewModel(IPatientAppService appService,  IEventAggregator ea)
         {
@@ -35,10 +35,11 @@ namespace FacCigo.ViewModels.Patients
             AppService = appService;
             CreateCommand = new DelegateCommand<ICloseable>(Create);
             
+            
         }
         public DelegateCommand<ICloseable> CreateCommand { get; private set; }
-        [StringLength(ExamConsts.MaxLengthName, ErrorMessage = "La Taille ne correspond pas")]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Vous devez fournir le prenom")]
+        [StringLength(PatientConsts.MaxNameLength, ErrorMessage = "La Taille ne correspond pas")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Vous devez fournir le Nom")]
         public string FirstName
         {
             get { return _firstname; }
@@ -49,7 +50,7 @@ namespace FacCigo.ViewModels.Patients
             get { return _id; }
             set { SetProperty(ref _id, value); }
         }
-        [StringLength(ExamConsts.MaxLengthName, ErrorMessage = "La Taille ne correspond pas")]
+        [StringLength(PatientConsts.MaxNameLength, ErrorMessage = "La Taille ne correspond pas")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Vous devez fournir le Nom")]
         public string LastName
         {
@@ -66,6 +67,7 @@ namespace FacCigo.ViewModels.Patients
               
             }
         }
+        [DataType(DataType.Date,ErrorMessage ="Entrez une date valide")]
         public DateTime BirthDate
         {
             get { return _birthDate; }
@@ -77,6 +79,8 @@ namespace FacCigo.ViewModels.Patients
             get { return _address; }
             set { SetProperty(ref _address, value); }
         }
+        [StringLength(PatientConsts.MaxPhoneNumberLength, ErrorMessage = "La Taille ne correspond pas")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Vous devez fournir le numero de telephone")]
         public string PhoneNumber
         {
             get { return _phoneNumber; }
@@ -94,8 +98,8 @@ namespace FacCigo.ViewModels.Patients
                 if (HasErrors) return;
                 PatientInput input = new PatientInput() { FirstName = FirstName, LastName = LastName,
                                                           MiddleName = MiddleName, BirthDate = BirthDate,PhoneNumber=PhoneNumber,Address=Address };
-                PatientDto examDto = await (NewExam ? AppService.CreateAsync(input) : AppService.UpdateAsync(Id, input));
-                if (NewExam) EventAggregator.GetEvent<PatientAddedEvent>().Publish(examDto);
+                PatientDto examDto = await (NewPatient ? AppService.CreateAsync(input) : AppService.UpdateAsync(Id, input));
+                if (NewPatient) EventAggregator.GetEvent<PatientAddedEvent>().Publish(examDto);
                 else EventAggregator.GetEvent<PatientUpdatedEvent>().Publish(examDto);
                 window.Close();
             }
@@ -112,19 +116,19 @@ namespace FacCigo.ViewModels.Patients
 
         }
         public bool IsValid { get { return !HasErrors; } }
-     
-
+        
+        
         public void UpdateModel(PatientDto dto)
         {
             updated = dto;
-            NewExam = false;
+            NewPatient = false;
             Id = dto.Id;
             FirstName = dto.FirstName;
             LastName = dto.LastName;
             MiddleName = dto.MiddleName;
             BirthDate = dto.BirthDate.Value;
             Address = dto.Address;
-
+            PhoneNumber = dto.PhoneNumber;
 
         }
     }

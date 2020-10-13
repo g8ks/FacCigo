@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Domain.Services;
 using Volo.Abp.Settings;
 
@@ -11,13 +12,13 @@ namespace FacCigo
 {
     public class InvoiceManager:DomainService
     {
-        private readonly IInvoiceRepository Repository;
-        private readonly IExchangeRateRepository ExchangeRateRepository;
-        private readonly IExamRepository ExamRepository;
+        private readonly IRepository<Invoice, Guid> Repository;
+        private readonly IRepository<ExchangeRate, Guid> ExchangeRateRepository;
+        private readonly IRepository<Exam, Guid> ExamRepository;
         private readonly ISettingProvider SettingProvider;
-        private readonly ICurrencyRepository CurrencyRepository;
-        public InvoiceManager(IInvoiceRepository repo, 
-              IExchangeRateRepository exchangeRates, IExamRepository exams,ICurrencyRepository currencies,SettingProvider settingProvider)
+        private readonly IRepository<Currency, string> CurrencyRepository;
+        public InvoiceManager(IRepository<Invoice,Guid> repo, 
+              IRepository<ExchangeRate,Guid> exchangeRates, IRepository<Exam,Guid> exams,IRepository<Currency,string> currencies,SettingProvider settingProvider)
         {
             Repository = repo;
             ExchangeRateRepository = exchangeRates;

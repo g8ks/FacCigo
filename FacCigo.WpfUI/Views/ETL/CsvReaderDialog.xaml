@@ -7,7 +7,8 @@
         xmlns:fluentui="clr-namespace:FluentUI;assembly=FluentUI"
         x:Name="csvReaderDialog"
         mc:Ignorable="d"
-        Title="CsvReaderDialog" Height="450" Width="800" ResizeMode="NoResize" WindowStyle="None" WindowStartupLocation="CenterOwner">
+        Title="CsvReaderDialog" MinHeight="450" MinWidth="800" MaxWidth="800" MaxHeight="450"
+        ResizeMode="NoResize" WindowStyle="None" WindowStartupLocation="CenterOwner">
     <Grid>
         <Grid>
             <DataGrid  ItemsSource="{Binding Models}" VerticalAlignment="Top" Margin="0 2 0 0" AutoGenerateColumns="True"/>

@@ -15,7 +15,7 @@ namespace FacCigo
         public virtual DateTime InvoiceDate { get; set; }
         public virtual decimal TotalAmount { get; set; }
         public virtual InvoiceStatus Status { get; set; } 
-        public virtual List<InvoiceLineDto> InvoiceLines { get; set; }
+        public virtual IList<InvoiceLineDto> InvoiceLines { get; set; }
         public virtual string CurrencyId { get;set; }
         public virtual Guid ExchangeRateId { get;set; }
         public virtual decimal Rate { get; set; }
@@ -25,6 +25,7 @@ namespace FacCigo
     {
         public Guid InvoiceID { get; set; }
         public Guid ExamId { get; set; }
+        public ExamDto Exam { get; set; }
         public decimal Amount { get; set; }
         public string CurrencyId { get; set; }
         public decimal ConvertedAmount { get;set; }

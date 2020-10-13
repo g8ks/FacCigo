@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FacCigo.ViewModels.Patients;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -19,8 +20,9 @@ namespace FacCigo
     /// </summary>
     public partial class PatientPage : Page,ITransientDependency
     {
-        public PatientPage()
+        public PatientPage(IPatientsViewModel viewModel)
         {
+            DataContext = viewModel;
             InitializeComponent();
         }
     }

@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FacCigo"
         xmlns:fluentui="clr-namespace:FluentUI;assembly=FluentUI"
+         xmlns:converter="clr-namespace:FacCigo.Converters"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
@@ -15,27 +16,45 @@
         AutomationProperties.Name="{Binding Title, RelativeSource={RelativeSource Self}}"
         FontFamily="{materialDesign:MaterialDesignFont}"
         mc:Ignorable="d"
-        Title="ExchangeRateAdd" Height="170" Width="500" ShowInTaskbar="False" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None">
+        Title="ExchangeRateAdd" MinHeight="170"  MaxHeight="170" MaxWidth="500" 
+        MinWidth="500" ShowInTaskbar="False" ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen" WindowStyle="None">
+    <Window.Resources>
+        <converter:CurrencyConverter x:Key="currencyConverter"/>
+       
+
+    </Window.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="60"/>
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
-            <StackPanel Orientation="Vertical">
-                <TextBlock Text="{Binding ErrorText}" Margin="75 10" HorizontalAlignment="Center" FontWeight="DemiBold" Foreground="Red"/>
-                <TextBlock Text="Entrez le Taux pour 1 USD" VerticalAlignment="Center" Margin="75 10" HorizontalAlignment="Left" FontWeight="DemiBold" />
-                <TextBox x:Name="Rate" VerticalAlignment="Center" Margin="75 0" Text="{Binding Rate}" TextAlignment="Right" 
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="60"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="{Binding ErrorText}" Margin="75 10" HorizontalAlignment="Center" FontWeight="DemiBold" Foreground="Red"/>
+                    <TextBlock Text="Entrez le Taux pour 1 USD" VerticalAlignment="Center" Margin="75 10" HorizontalAlignment="Left" FontWeight="DemiBold" />
+                    <TextBox x:Name="Rate" VerticalAlignment="Center" Margin="75 0" Text="{Binding Rate,Converter={StaticResource currencyConverter}}" TextAlignment="Right" 
                           />
-            </StackPanel>
-        </Grid>
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <Button Content="Annuler" HorizontalAlignment="Right" Margin="300 0 0 0" IsCancel="True"/>
-            <Button Content="Enregistrer" HorizontalAlignment="Right" Margin="10 0 0 0 " Style="{StaticResource FabricPrimaryButtonStyle}"
+                </StackPanel>
+            </Grid>
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <Button Content="Annuler" HorizontalAlignment="Right" Margin="290 0 0 0" IsCancel="True"/>
+                <Button Content="Enregistrer" HorizontalAlignment="Right" Margin="10 0 0 0 " Style="{StaticResource FabricPrimaryButtonStyle}"
                     Command="{Binding CreateCommand}" IsDefault="True"
                     CommandParameter="{Binding ElementName=ExchangeDialog}"/>
-        </StackPanel>
+            </StackPanel>
+        </Grid>
         <Rectangle VerticalAlignment="Top" Height="2" Stroke="{x:Null}" Fill="#3C8DBC" Margin="0,0,0,0"
             PreviewMouseDown="WindowDraggableArea_OnPreviewMouseDown"/>
+        <Rectangle
+            Stroke="{x:Null}" Fill="#3C8DBC" Margin="0,0,0,0"
+            VerticalAlignment="Bottom" Width="0.5" />
+        <Rectangle
+            Stroke="{x:Null}" Fill="#3C8DBC" Margin="0,0,0,0"
+            HorizontalAlignment="Left" Width="0.5" x:Name="WindowResizeLeft" />
+        <Rectangle
+            Stroke="{x:Null}" Fill="#3C8DBC" Margin="0,0,0,0"
+            HorizontalAlignment="Right" Width="0.5" x:Name="WindowResizeRight" />
     </Grid>
 </Window>

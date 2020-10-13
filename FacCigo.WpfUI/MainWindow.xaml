@@ -188,7 +188,7 @@
                         <Button Background="{x:Null}" x:Name="btnExchangeRate" BorderBrush="{x:Null}" Click="BtnExchangeRate_Click">
                             <materialDesign:PackIcon Kind="Edit" Foreground="White"></materialDesign:PackIcon></Button>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Rate,TargetNullValue='?'}" FontSize="12" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
+                            <TextBlock Text="{Binding Rate,TargetNullValue='?', Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="12" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
                         </StackPanel>
                     </StackPanel>
                   

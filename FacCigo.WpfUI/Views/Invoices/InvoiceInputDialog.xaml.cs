@@ -1,4 +1,6 @@
 ﻿using FacCigo.Commands;
+using FacCigo.Models;
+using FacCigo.ViewModels.Invoices;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,9 +21,32 @@ namespace FacCigo.Views.Invoices
     /// </summary>
     public partial class InvoiceInputDialog : Window,ICloseable,ITransientDependency
     {
-        public InvoiceInputDialog()
+        public InvoiceInputDialog(IInvoiceInputViewModel viewModel)
         {
+            DataContext = viewModel;
             InitializeComponent();
+            
+        }
+        public void setModel(InvoiceModel invoice)
+        {
+            ((IInvoiceInputViewModel)DataContext).UpdateModel(invoice);
+        }
+        private void WindowDraggableArea_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton != MouseButtonState.Pressed)
+                return;
+
+            if (WindowStateHelper.IsMaximized)
+            {
+                WindowStateHelper.SetWindowSizeToNormal(this, true);
+                DragMove();
+            }
+            else
+            {
+                DragMove();
+            }
+
+            WindowStateHelper.UpdateLastKnownLocation(Top, Left);
         }
     }
 }

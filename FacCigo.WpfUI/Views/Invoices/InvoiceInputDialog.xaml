@@ -5,9 +5,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FacCigo.Views.Invoices"
-         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-         xmlns:fluentui="clr-namespace:FluentUI;assembly=FluentUI"
-         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        xmlns:converter="clr-namespace:FacCigo.Converters"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:fluentui="clr-namespace:FluentUI;assembly=FluentUI" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:prism="http://prismlibrary.com/"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
          TextElement.FontWeight="Regular"
          TextElement.FontSize="13"
          TextOptions.TextFormattingMode="Ideal" 
@@ -15,15 +17,12 @@
           AutomationProperties.Name="{Binding Title, RelativeSource={RelativeSource Self}}"
          FontFamily="{materialDesign:MaterialDesignFont}"
         mc:Ignorable="d"
-        Title="InvoiceInputDialog" Height="600" Width="800" ResizeMode="NoResize" WindowStyle="None" WindowStartupLocation="CenterScreen">
+        Title="InvoiceInputDialog" MinHeight="700" MinWidth="920" ResizeMode="NoResize" WindowStyle="None" WindowStartupLocation="CenterScreen">
     <Window.Resources>
-        <ControlTemplate x:Key="ComboBoxTemplate1">
-            <StackPanel>
-                <ItemsPresenter x:Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Contained" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
-                <Separator/>
-                <Button Content="Nouveau Patient"/>
-            </StackPanel>
-        </ControlTemplate>
+        <converter:CurrencyConverter x:Key="currencyConverter"/>
+        <converter:IndexConverter x:Key="indexConverter"/>
+        <CollectionViewSource x:Key="ExamItems" Source="{Binding Exams}" />
+        
     </Window.Resources>
     <Grid>
         <Grid>
@@ -36,43 +35,110 @@
                     <StackPanel Orientation="Vertical" Margin="0 10 0  20">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Id" Margin="5 0" VerticalAlignment="Center"/>
-                            <TextBox x:Name="Id" Text="{Binding Id}" Width="200" Margin="55 0"/>
+                            <TextBox x:Name="Id" Text="{Binding Path=Model.Id}" Width="200" Margin="55 0" IsEnabled="False"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Ref No" Margin="5 5" VerticalAlignment="Center"/>
+                            <TextBox x:Name="ReferenceNo" Text="{Binding Path=Model.ReferenceNo}" Width="200" Margin="30 5" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Patient" Margin="5 5 0 0" VerticalAlignment="Center"/>
-                            <ComboBox Template="{DynamicResource ComboBoxTemplate1}" 
+                            <ComboBox 
                                       x:Name="PatientName" ItemsSource="{Binding Patients}" 
                                       Width="200" Margin="30 10"
-                                      SelectedItem="{Binding Patient,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" 
+                                      SelectedItem="{Binding Path=Model.Patient,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" 
                                       DisplayMemberPath="Name"
+                                      fluentui:FabricExtra.IsRequired="True"
                                       />
-
+                            <Button  x:Name="btnAddPatient" HorizontalAlignment="Right" Margin="10" Style="{StaticResource FabricButtonStyle}" Command="{Binding AddPatientCommand}">
+                                <fluentui:FabricIcon Icon="Add"/>
+                            </Button>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Date" Margin="5 5 0 0" VerticalAlignment="Center"/>
-                            <DatePickerTextBox x:Name="InvoiceDate" Text="{Binding InvoiceDate}" Width="200" Margin="40 10"/>
+                            <DatePickerTextBox x:Name="InvoiceDate" Text="{Binding Path=Model.InvoiceDate , StringFormat=d, ConverterCulture=fr-CD}" Width="200" Margin="40 10"/>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Total" Margin="5 5 0 0" VerticalAlignment="Center"/>
-                            <TextBox x:Name="TotalAmount" Text="{Binding TotalAmount}" 
-                                     Width="200" Margin="40 10" IsEnabled="True"/>
-                            <TextBlock/>
-                        </StackPanel>
+                        <Border HorizontalAlignment="Right" BorderThickness="0.9 2 0.9 0.9" BorderBrush="#3C8DBC" Margin="10 0 0 50" VerticalAlignment="Top">
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Right" >
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Total" Margin="5 5 0 0" VerticalAlignment="Center"/>
+                                    <TextBox x:Name="TotalAmount" Text="{Binding Path=Model.TotalAmount, Converter={StaticResource currencyConverter}}" 
+                                     Width="200" Margin="80 10" IsEnabled="False"/>
+                                    <TextBlock/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
+                                    <TextBlock Text="Taux Change" Margin="5 5 0 10" VerticalAlignment="Center"/>
+                                    <TextBox x:Name="ExchangeRate" Text="{Binding Path=ExchangeRate.Rate,Converter={StaticResource currencyConverter}}"
+                                     Width="200" Margin="40 10" IsEnabled="False"/>
+                                    <TextBlock/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                        
+                        
                     </StackPanel>
+                    
                 </StackPanel>
-                <DataGrid Name="dgInvoicelines" Grid.Row="1" 
-                          AutoGenerateColumns="False" HorizontalAlignment="Stretch" Margin="50" Width="auto" MinWidth="350">
-                    <DataGrid.Columns>
-                        <DataGridComboBoxColumn ItemsSource="{Binding Exams}" Header="RefNo" MinWidth="50"/>
-                        <DataGridComboBoxColumn  ItemsSource="{Binding Exams}" Header="Examen" MinWidth="200"/>
-                        <DataGridTextColumn  Binding="{Binding Amount}" Header="Montant" MinWidth="100"/>
-                    </DataGrid.Columns>
+                <Grid Grid.Row="1" Margin="100 0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <ComboBox x:Name="cmBExams" Margin="100 0" ItemsSource="{Binding Path=Exams}" 
+                                  DisplayMemberPath="Name"
+                                  Width="200"/>
+                        <Button  Style="{StaticResource FabricPrimaryButtonStyle}" Margin="-30 0"
+                                 Command="{Binding AddExamCommand}" CommandParameter="{Binding ElementName=cmBExams, Path=SelectedValue}">
+                            <fluentui:FabricIcon Icon="AddTo"/>
+                        </Button>
+                    </StackPanel>
+                    <DataGrid AutoGenerateColumns="False" Name="dgInvoicelines" Grid.Row="1" CanUserAddRows="True"
+                           HorizontalAlignment="Stretch" Margin="100 30" Width="auto" MinWidth="350"
+                           BorderThickness="1" Foreground="#525252" RowBackground="#fff"
+                           ItemsSource="{Binding Path=Model.InvoiceLines,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                           IsReadOnly="False"
+                           SelectionMode="Extended"
+                           AlternationCount="{Binding Items.Count, RelativeSource={RelativeSource Self}}" 
+                           SelectedItem="{Binding Path=SelectedInvoiceLine}" 
+                          
+                          >
 
-
-                </DataGrid>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="RefNo" Binding="{Binding Path=Exam.ReferenceNo}" Width="100"/>
+                            <DataGridTextColumn Binding="{Binding Path=Exam.Name}" Header="Examen" Width="250"/>
+                            <DataGridTextColumn  Binding="{Binding Amount, Converter={StaticResource currencyConverter}}" Header="Montant" Width="150" IsReadOnly="True"/>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button BorderThickness="0" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}},
+                                              Path=DataContext.DeleteInvoiceLineCommand}"
+                                              CommandParameter="{Binding}">
+                                            <fluentui:FabricIcon Icon="Delete"/>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                        <DataGrid.RowHeaderStyle>
+                            <Style TargetType="DataGridRowHeader">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <TextBlock Text="{Binding AlternationIndex, RelativeSource={RelativeSource AncestorType=DataGridRow},
+                                                 Converter={StaticResource indexConverter}}" Width="50"/>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.RowHeaderStyle>
+                       
+                    </DataGrid>
+                </Grid>
+               
             </Grid>
-                <StackPanel Orientation="Horizontal" Margin="0,4,0,0" VerticalAlignment="Bottom">
-                <Button Content="Annuler" HorizontalAlignment="Right" Margin="550 0 0 10" IsCancel="True"/>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,2" VerticalAlignment="Bottom">
+                <Button Content="Annuler" HorizontalAlignment="Right" Margin="700 0 0 10" IsCancel="True"/>
                 <Button Content="Enregistrer" HorizontalAlignment="Right" Margin="20 0 20 10 " Style="{StaticResource FabricPrimaryButtonStyle}"
                     Command="{Binding CreateCommand}" 
                     CommandParameter="{Binding ElementName=invoiceInputDialog}"
@@ -82,15 +148,16 @@
         <Rectangle VerticalAlignment="Top" Height="3" Stroke="{x:Null}" 
                    Fill="#3C8DBC" Margin="0,0,0,0"
                    PreviewMouseDown="WindowDraggableArea_OnPreviewMouseDown"/>
-        <Rectangle
-            Stroke="{x:Null}" Fill="#3C8DBC" Margin="0,0,0,0"
-            VerticalAlignment="Bottom" Width="0.5" />
+        
         <Rectangle
             Stroke="{x:Null}" Fill="#3C8DBC" Margin="0,0,0,0"
             HorizontalAlignment="Left" Width="0.5" x:Name="WindowResizeLeft" />
         <Rectangle
             Stroke="{x:Null}" Fill="#3C8DBC" Margin="0,0,0,0"
             HorizontalAlignment="Right" Width="0.5" x:Name="WindowResizeRight" />
+        <Rectangle
+            Stroke="{x:Null}" Fill="#3C8DBC" Margin="0,0,0,0"
+            VerticalAlignment="Bottom" Width="0.5" />
 
     </Grid>
 </Window>

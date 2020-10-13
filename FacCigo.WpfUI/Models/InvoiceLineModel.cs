@@ -8,30 +8,35 @@ namespace FacCigo.Models
 {
     public class InvoiceLineModel : ValidatableBindableBase,ITransientDependency
     {
-        private ExchangeRateDto _exchange;
+      
         private ExamDto _exam;
         private decimal _amount;
         public ExamDto Exam {get {return _exam;} 
-                             set{ SetProperty(ref _exam, value); calculateA();
+                             set{ SetProperty(ref _exam, value);
+                
 
             }
         }
-        public ExchangeRateDto ExchangeRate
-        {
-            get { return _exchange; }
-            set { SetProperty(ref _exchange, value); }
-        }
+        
         public decimal Amount { get { return _amount; }
-            set { SetProperty(ref _amount, value); calculateA(); }
+            set { SetProperty(ref _amount, value);         
+            
+            }
           }
 
         public InvoiceLineInput InvoiceLine()
         {
             return new InvoiceLineInput() { ExamId = Exam.Id };
         }
-        protected void calculateA()
+
+        public static IList<InvoiceLineModel> InvoiceLines(IList<InvoiceLineDto> dtos)
         {
-            Amount = ExchangeRate.Rate * Exam.Price;
+            IList<InvoiceLineModel> invoiceLines = new List<InvoiceLineModel>();
+            foreach (InvoiceLineDto dto in dtos)
+            {
+                invoiceLines.Add(new InvoiceLineModel() { Exam = dto.Exam, Amount = dto.ConvertedAmount });
+             }
+            return invoiceLines;
         }
     }
 }

@@ -29,7 +29,7 @@ namespace FacCigo.Exams
         public Task<string> NextReferenceNo(Guid CategoryId)
         {
             string RefNo = string.Format("{0:0000}", new Random().Next(0, 999));
-            while (Repository.All(c => c.ReferenceNo.Contains(RefNo) && c.CategoryId == CategoryId))
+            while (Repository.Any(c => c.ReferenceNo.Contains(RefNo) && c.CategoryId == CategoryId))
             {
                 RefNo = string.Format("{0:0000}", new Random().Next(0, 999));
             }
