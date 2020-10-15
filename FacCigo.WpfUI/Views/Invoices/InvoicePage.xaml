@@ -84,7 +84,7 @@
         <GridSplitter  VerticalAlignment="Stretch" HorizontalAlignment="Right" Margin="2 0 0 0" Width="3" Background="LightGray"/>
         <Grid Grid.Column="1" x:Name="details" >
             <FlowDocumentPageViewer DataContext="{Binding SelectedItem}" x:Name="Viewer">
-                <FlowDocument x:Name="Doc" ColumnWidth="900">
+                <FlowDocument x:Name="Doc" ColumnWidth="10000" PageWidth="816">
                     <Paragraph LineHeight="1" FontSize="1"  BorderThickness="0 1 0 0" BorderBrush="Black">
                         <LineBreak/>
                     </Paragraph >
@@ -93,15 +93,20 @@
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock FontSize="15" Margin="0" FontWeight="Bold">CABINET D'IMAGERIE DE LA GOMBE "C.I.G.O"</TextBlock>
-                                    <TextBlock Margin="20 0 0 0" FontSize="12">Kinshasa, le</TextBlock>
+                                    <TextBlock Margin="400 0 0 0" FontSize="12">Kinshasa, le</TextBlock>
                                     <TextBlock Text="{Binding InvoiceDate , StringFormat=d, ConverterCulture=fr-CD}" FontSize="12" Margin="4 0 0 0"/>
                                 </StackPanel>
                                 <StackPanel >
                                     <TextBlock >Dr. Mbongo Bahati</TextBlock>
                                     <TextBlock Margin="0 5 0 0" FontStyle="Italic" TextAlignment="Left" FontSize="14" Foreground="Gray">
                                       1525,Boulevard du 30 Juin (Immeuble ex-Shell)</TextBlock>
-                                    <TextBlock FontStyle="Italic" TextAlignment="Left" FontSize="14" Foreground="Gray">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock FontStyle="Italic" TextAlignment="Left" FontSize="14" Foreground="Gray">
                                        Kinshasa Gombe (RDC)</TextBlock>
+                                        <TextBlock Margin="420 0 0 0" FontSize="14" >
+                                            0999 970 735 -0998 343 976</TextBlock>
+                                    </StackPanel>
+                                   
                                 </StackPanel>
 
                             </StackPanel>
@@ -133,29 +138,35 @@
                         <LineBreak/>
                     </Paragraph >
                     <BlockUIContainer>
-                        <ListView BorderThickness="0" ItemsSource="{Binding Path=InvoiceLines}">
+                        <ListView BorderThickness="0" ItemsSource="{Binding Path=InvoiceLines}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" >
                             <ListView.View>
                                 <GridView>
-                                    <GridViewColumn Header="Examen" DisplayMemberBinding="{Binding Path=Exam.Name}" Width="400" />
+                                    <GridViewColumn Header="Examen" DisplayMemberBinding="{Binding Path=Exam.Name}" Width="600" />
                                     <GridViewColumn Header="Montant" 
                                                     DisplayMemberBinding="{Binding ConvertedAmount,Converter={StaticResource currencyConverter}}"
-                                                    Width="120" />
+                                                    Width="200" />
                                 </GridView>
                             </ListView.View>
                         </ListView>
                     </BlockUIContainer>
-                    <Paragraph LineHeight="1" FontSize="1"  BorderThickness="0 1 0 0" BorderBrush="Black">
+                    <Paragraph LineHeight="1" FontSize="1"  BorderThickness="0 1 0 0" BorderBrush="Gray">
                         <LineBreak/>
                     </Paragraph >
                     <Section>
                         <BlockUIContainer>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 5 30 5">
-                                <TextBlock FontSize="16" Text="Net a Payer:    "/>
-                                <TextBlock Text="{Binding TotalAmount, Converter={StaticResource currencyConverter}}"/>
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 7 30 5">
+                                    <TextBlock FontSize="16" Text="Net a Payer:    "/>
+                                    <TextBlock Text="{Binding TotalAmount, Converter={StaticResource currencyConverter}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal"  Margin="0 5 30 5">
+                                    <TextBlock Margin="600 0">Cassier(e)</TextBlock>
+                                </StackPanel>
                             </StackPanel>
                         </BlockUIContainer>
                     </Section>
-                    <Paragraph LineHeight="1" FontSize="1"  BorderThickness="0 1 0 0" BorderBrush="Black">
+                    <Paragraph LineHeight="1" FontSize="1"  BorderThickness="0 1 0 0" BorderBrush="Gray">
+                        
                         <LineBreak/>
                     </Paragraph >
                 </FlowDocument>
