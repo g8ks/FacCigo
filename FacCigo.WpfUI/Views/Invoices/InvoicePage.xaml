@@ -93,7 +93,7 @@
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock FontSize="15" Margin="0" FontWeight="Bold">CABINET D'IMAGERIE DE LA GOMBE "C.I.G.O"</TextBlock>
-                                    <TextBlock Margin="400 0 0 0" FontSize="12">Kinshasa, le</TextBlock>
+                                    <TextBlock Margin="250 0 0 0" FontSize="12">Kinshasa, le</TextBlock>
                                     <TextBlock Text="{Binding InvoiceDate , StringFormat=d, ConverterCulture=fr-CD}" FontSize="12" Margin="4 0 0 0"/>
                                 </StackPanel>
                                 <StackPanel >
