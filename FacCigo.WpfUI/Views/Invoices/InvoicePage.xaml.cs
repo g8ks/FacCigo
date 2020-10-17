@@ -30,24 +30,24 @@ namespace FacCigo
             try
             {
                 PageMediaSize pageSize = null;
-                bool bA4 = true;
-                if (bA4)pageSize = new PageMediaSize(PageMediaSizeName.NorthAmericaLetter);
-                else pageSize = new PageMediaSize(PageMediaSizeName.ISOA4);
+                //bool bA4 = true;
+                //if (bA4)pageSize = new PageMediaSize(PageMediaSizeName.NorthAmericaLetter);
+                //else pageSize = new PageMediaSize(PageMediaSizeName.ISOA4);
 
                 // Create a PrintDialog
                 PrintDialog printDlg = new PrintDialog();
                
              
-                printDlg.PrintTicket.PageMediaSize = pageSize;
+                //printDlg.PrintTicket.PageMediaSize = pageSize;
                 if (printDlg.ShowDialog() == true)
                 {
                     
                   
-                    PrintTicket pt = printDlg.PrintTicket;
-                    Double printableWidth = pt.PageMediaSize.Width.Value;
-                    Double printableHeight = pt.PageMediaSize.Height.Value;
-                    var pageSize2 = new Size(printDlg.PrintableAreaWidth, printDlg.PrintableAreaHeight);
-                    Doc.PageWidth = pageSize2.Width;
+                    //PrintTicket pt = printDlg.PrintTicket;
+                    //Double printableWidth = pt.PageMediaSize.Width.Value;
+                   // Double printableHeight = pt.PageMediaSize.Height.Value;
+                    //var pageSize2 = new Size(printDlg.PrintableAreaWidth, printDlg.PrintableAreaHeight);
+                   // Doc.PageWidth = pageSize2.Width;
                     IDocumentPaginatorSource idpSource = Doc;
                     printDlg.PrintDocument(idpSource.DocumentPaginator, "Impression Facture");
                 }
