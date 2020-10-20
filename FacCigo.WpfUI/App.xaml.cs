@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -16,6 +18,7 @@ namespace FacCigo
     /// </summary>
     public partial class App : Application
     {
+     
         private readonly IHost host;
         public App()
         {
@@ -35,6 +38,15 @@ namespace FacCigo
         }
         public void Application_Startup(object sender,StartupEventArgs e)
         {
+            Process proc = Process.GetCurrentProcess();
+            int count = Process.GetProcesses().Where(p =>
+                p.ProcessName == proc.ProcessName).Count();
+
+            if (count > 1)
+            {
+                MessageBox.Show("Already an instance is running...");
+                App.Current.Shutdown();
+            }
 
         }
         protected override async void OnExit(ExitEventArgs e)

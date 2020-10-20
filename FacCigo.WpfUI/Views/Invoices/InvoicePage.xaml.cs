@@ -19,6 +19,11 @@ namespace FacCigo
         {
             DataContext = viewModel;
             InitializeComponent();
+            Doc.PageWidth = PrintLayout.CUTSHEETS.Width;
+            Doc.PageHeight = PrintLayout.CUTSHEETS.Height;
+            Doc.PagePadding = PrintLayout.CUTSHEETS.Margin;
+            Doc.ColumnWidth = PrintLayout.CUTSHEETS.ColumnWidth;
+          
         }
         public void Print()
         {
@@ -33,21 +38,20 @@ namespace FacCigo
                 //bool bA4 = true;
                 //if (bA4)pageSize = new PageMediaSize(PageMediaSizeName.NorthAmericaLetter);
                 //else pageSize = new PageMediaSize(PageMediaSizeName.ISOA4);
-
+                //PageMediaSizeName.
                 // Create a PrintDialog
-                PrintDialog printDlg = new PrintDialog();
                
-             
-                //printDlg.PrintTicket.PageMediaSize = pageSize;
+                pageSize = new PageMediaSize(PrintLayout.CUTSHEETS.Width,PrintLayout.CUTSHEETS.Height);
+                PrintDialog printDlg = new PrintDialog();
+                printDlg.PrintTicket.PageMediaSize = pageSize;
                 if (printDlg.ShowDialog() == true)
                 {
-                    
-                  
-                    //PrintTicket pt = printDlg.PrintTicket;
-                    //Double printableWidth = pt.PageMediaSize.Width.Value;
-                   // Double printableHeight = pt.PageMediaSize.Height.Value;
-                    //var pageSize2 = new Size(printDlg.PrintableAreaWidth, printDlg.PrintableAreaHeight);
-                   // Doc.PageWidth = pageSize2.Width;
+                    PrintTicket pt = printDlg.PrintTicket;
+                    Double printableWidth = pt.PageMediaSize.Width.Value;
+                    Double printableHeight = pt.PageMediaSize.Height.Value;
+                    var pageSize2 = new Size(printDlg.PrintableAreaWidth, printDlg.PrintableAreaHeight);
+                    Doc.PageWidth = pageSize2.Width;
+                    //Doc.PageHeight = pageSize2.Height;
                     IDocumentPaginatorSource idpSource = Doc;
                     printDlg.PrintDocument(idpSource.DocumentPaginator, "Impression Facture");
                 }
