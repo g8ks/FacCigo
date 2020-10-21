@@ -1,32 +1,39 @@
-﻿<FlowDocument 
-     
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-              xmlns:local="clr-namespace:FacCigo.Views.Invoices"
+﻿<FlowDocument   
+     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+     xmlns:local="clr-namespace:FacCigo"
      xmlns:converter="clr-namespace:FacCigo.Converters"
      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+     PageHeight="{Binding Height, Source={x:Static local:PrintLayout.CUTSHEETS}}"
+     PageWidth="{Binding Width, Source={x:Static local:PrintLayout.CUTSHEETS}}"
+     PagePadding="{Binding Margin, Source={x:Static local:PrintLayout.CUTSHEETS}}"
+     ColumnWidth="{Binding ColumnWidth, Source={x:Static local:PrintLayout.CUTSHEETS}}"
+     ColumnGap="4"
+     FontFamily="Arial">
     <FlowDocument.Resources>
         <converter:CurrencyConverter x:Key="currencyConverter"/>
     </FlowDocument.Resources>
-    <Paragraph LineHeight="1" FontSize="1"  BorderThickness="0 1 0 0" BorderBrush="Black">
+    <Paragraph LineHeight="1" FontSize="1"  BorderThickness="0 1 0 0" BorderBrush="Black" Margin="5">
         <LineBreak/>
     </Paragraph >
-    <Section>
+    <Section Margin="7 5 7 5" FontFamily="Arial">
         <BlockUIContainer>
             <StackPanel Orientation="Vertical">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock FontSize="15" Margin="0" FontWeight="Bold">CABINET D'IMAGERIE DE LA GOMBE "C.I.G.O"</TextBlock>
-                    <TextBlock Margin="250 0 0 0" FontSize="12">Kinshasa, le</TextBlock>
-                    <TextBlock Text="{Binding InvoiceDate , StringFormat=d, ConverterCulture=fr-CD}" FontSize="12" Margin="4 0 0 0"/>
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <TextBlock FontSize="17" Margin="2 0" FontWeight="Bold">CABINET D'IMAGERIE DE LA GOMBE "C.I.G.O"</TextBlock>
+                    <TextBlock Margin="240 0 0 0" FontSize="14">
+                                        <Run>Kinshasa, le </Run>
+                                        <Run Text="{Binding InvoiceDate , StringFormat=d, ConverterCulture=fr-CD}"></Run>
+                    </TextBlock>
+
                 </StackPanel>
-                <StackPanel >
-                    <TextBlock >Dr. Mbongo Bahati</TextBlock>
-                    <TextBlock Margin="0 5 0 0" FontStyle="Italic" TextAlignment="Left" FontSize="14" Foreground="Gray">
+                <StackPanel Margin="5 0" >
+                    <TextBlock FontFamily="Arial" FontSize="17" Margin="2 0">Dr. Mbongo Bahati</TextBlock>
+                    <TextBlock Margin="2 5 0 0" FontStyle="Italic" TextAlignment="Left" FontSize="14" Foreground="Black">
                                       1525,Boulevard du 30 Juin (Immeuble ex-Shell)</TextBlock>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock FontStyle="Italic" TextAlignment="Left" FontSize="14" Foreground="Gray">
+                    <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
+                        <TextBlock FontStyle="Italic" TextAlignment="Left" FontSize="14" Foreground="Black" Margin="2 0">
                                        Kinshasa Gombe (RDC)</TextBlock>
-                        <TextBlock Margin="420 0 0 0" FontSize="14" >
+                        <TextBlock Margin="440 0 0 0" FontSize="14" >
                                             0999 970 735 -0998 343 976</TextBlock>
                     </StackPanel>
 
@@ -35,60 +42,69 @@
             </StackPanel>
         </BlockUIContainer>
     </Section>
-    <Paragraph LineHeight="1" FontSize="1"  BorderThickness="0 1 0 0" BorderBrush="Black">
+    <Paragraph LineHeight="1" FontSize="1"  BorderThickness="0 1 0 0" BorderBrush="Black"  Margin="7 0 7 0">
         <LineBreak/>
     </Paragraph >
-    <Section>
+    <Section  Margin="7 0 7 0">
         <BlockUIContainer>
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <TextBlock FontStyle="Normal" TextDecorations="Underline">
+                    <TextBlock FontStyle="Normal" TextDecorations="Underline" FontSize="13">
                                         <Run Text="Recu No "/>
                                         <Run Text="{Binding ReferenceNo}"></Run>
 
                     </TextBlock>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Patient(e) : " FontSize="14"  Margin="0 10 0 10"/>
-                    <TextBlock Text="{Binding PatientName}" FontSize="14" Margin="0 10 0 10"/>
+
+                    <TextBlock  FontSize="17"  Margin="7 10 7 10">
+                                         <Run  Text="Patient(e) :  "/>
+                                         <Run  Text="{Binding PatientName}"></Run>
+                    </TextBlock>
+
                 </StackPanel>
             </StackPanel>
 
 
         </BlockUIContainer>
     </Section>
-    <Paragraph LineHeight="1" FontSize="1"  BorderThickness="0 1 0 0" BorderBrush="Black">
+    <Paragraph LineHeight="1" FontSize="1"  BorderThickness="0 1 0 0" BorderBrush="Black"  Margin="7 0 7 0">
         <LineBreak/>
     </Paragraph >
-    <BlockUIContainer>
-        <ListView BorderThickness="0" ItemsSource="{Binding Path=InvoiceLines}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" >
+    <BlockUIContainer  Margin="7 0 7 0">
+        <ListView BorderThickness="0" ItemsSource="{Binding Path=InvoiceLines}" 
+                                  FontFamily="Arial" FontSize="17"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Hidden" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Examen" DisplayMemberBinding="{Binding Path=Exam.Name}" Width="600" />
                     <GridViewColumn Header="Montant" 
                                                     DisplayMemberBinding="{Binding ConvertedAmount,Converter={StaticResource currencyConverter}}"
-                                                    Width="200" />
+                                                    Width="230" />
                 </GridView>
             </ListView.View>
         </ListView>
     </BlockUIContainer>
-    <Paragraph LineHeight="1" FontSize="1"  BorderThickness="0 1 0 0" BorderBrush="Gray">
+    <Paragraph LineHeight="1" FontSize="1"  BorderThickness="0 1 0 0" BorderBrush="Gray"  Margin="7 0 7 0">
         <LineBreak/>
     </Paragraph >
-    <Section>
+    <Section  Margin="7 0 7 0">
         <BlockUIContainer>
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 7 30 5">
-                    <TextBlock FontSize="16" Text="Net a Payer:    "/>
-                    <TextBlock Text="{Binding TotalAmount, Converter={StaticResource currencyConverter}}"/>
+                    <TextBlock FontSize="17" >
+                                        <Run>Net a Payer:    </Run>
+                                        <Run Text="{Binding TotalAmount, Converter={StaticResource currencyConverter}}"></Run>
+                    </TextBlock>
+
                 </StackPanel>
                 <StackPanel Orientation="Horizontal"  Margin="0 5 30 5">
-                    <TextBlock Margin="600 0">Cassier(e)</TextBlock>
+                    <TextBlock Margin="600 0" FontSize="15">Cassier(e)</TextBlock>
                 </StackPanel>
             </StackPanel>
         </BlockUIContainer>
     </Section>
-    <Paragraph LineHeight="1" FontSize="1"  BorderThickness="0 1 0 0" BorderBrush="Gray">
+    <Paragraph LineHeight="1" FontSize="1"  BorderThickness="0 1 0 0" BorderBrush="Gray"  Margin="5 0 5 0">
 
         <LineBreak/>
     </Paragraph >
