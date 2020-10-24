@@ -26,6 +26,9 @@ namespace FacCigo
         {
             DataContext = viewModel;
             InitializeComponent();
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ListExams.ItemsSource);
+            PropertyGroupDescription groupDescription = new PropertyGroupDescription("Category");
+            view.GroupDescriptions.Add(groupDescription);
         }
     }
 }

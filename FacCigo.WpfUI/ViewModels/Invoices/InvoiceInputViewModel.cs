@@ -60,7 +60,7 @@ namespace FacCigo.ViewModels.Invoices
             SelectedCommand = new DelegateCommand<object[]>(OnItemSelected);
             AddExamCommand = new DelegateCommand<ExamDto>(AddExam);
             Patients = new ObservableCollection<PatientDto>();
-            Patients.AddRange(PatientService.GetListAsync(new PatientGetListInput() { }).Result.Items);
+            Patients.AddRange(PatientService.GetListAsync(new PatientGetListInput() { MaxResultCount=500 }).Result.Items);
             Currency = SettingProvider.GetOrNullAsync(FacCigoSettings.InvoiceCurrency).Result;
             Model = new InvoiceModel();
             Model.ReferenceNo = AppService.NextReferenceNo(Model.InvoiceDate.Year).Result;

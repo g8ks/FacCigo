@@ -37,7 +37,7 @@ namespace FacCigo.ViewModels.Exams
             ImportCommand = new DelegateCommand(Import);
             DeleteCommand = new DelegateCommand(Delete);
             Items = new ObservableCollection<ExamDto>();
-            Items.AddRange( AppService.GetListAsync(new ExamGetListInput()).Result.Items);
+            Items.AddRange( AppService.GetListAsync(new ExamGetListInput() { MaxResultCount=200}).Result.Items);
             EventAggregator.GetEvent<ExamUpdatedEvent>().Subscribe(OnExamUpdated);
             EventAggregator.GetEvent<ExamDeletedEvent>().Subscribe(OnExamDeleted);
             EventAggregator.GetEvent<ExamAddedEvent>().Subscribe(OnExamAdded);
@@ -89,7 +89,12 @@ namespace FacCigo.ViewModels.Exams
             CsvReaderViewModel<CsvReader<ExamModel>, ExamModel> viewModel 
                 = new CsvReaderViewModel<CsvReader<ExamModel>, ExamModel>(EventAggregator,_serviceProvider);
             dialog.ShowDialog(viewModel);
-        }
+            IList<ExamModel> examModels = viewModel.Models;
+            foreach(ExamModel model in examModels)
+            {
+
+            }
+         }
         private void OnExamAdded(ExamDto dto)
         {
             SelectedItem = Items.GetOrAdd(c => c.Id == dto.Id, () => dto);
