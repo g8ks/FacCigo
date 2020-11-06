@@ -1,4 +1,5 @@
 ﻿using FacCigo.ViewModels.Exams;
+using FacCigo.Views;
 using FacCigo.Views.Exams;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -20,7 +21,7 @@ namespace FacCigo
     /// <summary>
     /// Interaction logic for ExamPage.xaml
     /// </summary>
-    public partial class ExamPage : Page,ITransientDependency
+    public partial class ExamPage : Page,ITransientDependency,ISearchView
     {
         public ExamPage(IExamsViewModel viewModel)
         {
@@ -29,6 +30,10 @@ namespace FacCigo
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ListExams.ItemsSource);
             PropertyGroupDescription groupDescription = new PropertyGroupDescription("Category");
             view.GroupDescriptions.Add(groupDescription);
+        }
+        public void Search(string criteria)
+        {
+
         }
     }
 }

@@ -11,6 +11,13 @@ namespace FacCigo.Models
       
         private ExamDto _exam;
         private decimal _amount;
+
+        public InvoiceLineModel() { }
+        public InvoiceLineModel(ExamDto  dto,decimal amount)
+        {
+            Exam = dto;
+            Amount = amount;
+        }
         public ExamDto Exam {get {return _exam;} 
                              set{ SetProperty(ref _exam, value);
                 
@@ -34,7 +41,7 @@ namespace FacCigo.Models
             IList<InvoiceLineModel> invoiceLines = new List<InvoiceLineModel>();
             foreach (InvoiceLineDto dto in dtos)
             {
-                invoiceLines.Add(new InvoiceLineModel() { Exam = dto.Exam, Amount = dto.ConvertedAmount });
+                invoiceLines.Add(new InvoiceLineModel(dto.Exam, dto.ConvertedAmount));
              }
             return invoiceLines;
         }

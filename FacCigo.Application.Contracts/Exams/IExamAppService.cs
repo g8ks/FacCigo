@@ -11,5 +11,6 @@ namespace FacCigo
     {
         Task<string> NextReferenceNo(Guid CategoryId);
         Task<IList<ExamDto>> AddBulk(List<ExamInput> inputs);
+        Task<IList<ExamDto>> GetListAsync();
     }
 }

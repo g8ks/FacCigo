@@ -31,6 +31,10 @@ namespace FacCigo.Views.Invoices
         {
             ((IInvoiceInputViewModel)DataContext).UpdateModel(invoice);
         }
+        public void  addExam(ExamDto dto)
+        {
+            ((IInvoiceInputViewModel)DataContext).AddExam(dto);
+        }
         private void WindowDraggableArea_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton != MouseButtonState.Pressed)

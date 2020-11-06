@@ -19,6 +19,14 @@ namespace FacCigo
         public virtual string CurrencyId { get;set; }
         public virtual Guid ExchangeRateId { get;set; }
         public virtual decimal Rate { get; set; }
+
+        public string GroupTime { get {
+                if (CreationTime.Date == DateTime.Today.Date) { return "Aujourd'hui"; }
+                else if (CreationTime.Year == DateTime.Today.Year && CreationTime.Month == DateTime.Today.Month)
+                { return "Ce Mois"; }
+                else if (CreationTime.Year == DateTime.Today.Year) { return "Cette Année"; }
+                else { return "Anciennes"; }
+            } }
     }
 
     public class InvoiceLineDto

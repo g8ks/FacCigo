@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 
@@ -13,6 +14,13 @@ namespace FacCigo
         public PatientAppService(IRepository<Patient,Guid> repo) : base(repo)
         {
 
+        }
+        public Task<IList<PatientDto>> GetListAsync()
+        {
+            var list = Repository.AsQueryable()
+                     //  .Include(c => c.Invoices)
+                       .ToList();
+            return Task.FromResult(ObjectMapper.Map<IList<Patient>, IList<PatientDto>>(list));
         }
         protected override IQueryable<Patient> CreateFilteredQuery(PatientGetListInput input)
         {

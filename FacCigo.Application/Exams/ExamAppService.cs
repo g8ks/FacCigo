@@ -40,6 +40,13 @@ namespace FacCigo.Exams
         {
             return base.GetListAsync(input);
         }
+        public Task<IList<ExamDto>> GetListAsync()
+        {
+            var list = Repository.AsQueryable()
+                       .Include(c=>c.Category)
+                       .ToList();
+            return Task.FromResult(ObjectMapper.Map<IList<Exam>, IList<ExamDto>>(list));
+        }
 
         protected override IQueryable<Exam> CreateFilteredQuery(ExamGetListInput input)
         {

@@ -4,6 +4,7 @@ using System.Drawing.Printing;
 using System.Printing;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Documents;
 using Volo.Abp.DependencyInjection;
 
@@ -19,11 +20,14 @@ namespace FacCigo
         {
             DataContext = viewModel;
             InitializeComponent();
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ListInvoices.ItemsSource);
+            PropertyGroupDescription groupDescription = new PropertyGroupDescription("GroupTime");
+            view.GroupDescriptions.Add(groupDescription);
             Doc.PageWidth = PrintLayout.CUTSHEETS.Width;
             Doc.PageHeight = PrintLayout.CUTSHEETS.Height;
             Doc.PagePadding = PrintLayout.CUTSHEETS.Margin;
             Doc.ColumnWidth = PrintLayout.CUTSHEETS.ColumnWidth;
-          
+            
         }
         public void Print()
         {
@@ -34,13 +38,7 @@ namespace FacCigo
         {
             try
             {
-                PageMediaSize pageSize = null;
-                //bool bA4 = true;
-                //if (bA4)pageSize = new PageMediaSize(PageMediaSizeName.NorthAmericaLetter);
-                //else pageSize = new PageMediaSize(PageMediaSizeName.ISOA4);
-                //PageMediaSizeName.
-                // Create a PrintDialog
-               
+                PageMediaSize pageSize = null;  
                 pageSize = new PageMediaSize(PrintLayout.CUTSHEETS.Width,PrintLayout.CUTSHEETS.Height);
                 PrintDialog printDlg = new PrintDialog();
                 printDlg.PrintTicket.PageMediaSize = pageSize;

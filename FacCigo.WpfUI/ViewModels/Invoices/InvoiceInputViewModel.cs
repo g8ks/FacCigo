@@ -1,4 +1,5 @@
-﻿using FacCigo.Commands;
+﻿using FacCigo.Categories;
+using FacCigo.Commands;
 using FacCigo.Commands.Invoices;
 using FacCigo.Commands.Patients;
 using FacCigo.Exams;
@@ -30,6 +31,8 @@ namespace FacCigo.ViewModels.Invoices
         
         private ObservableCollection<PatientDto> _patients;
         private ObservableCollection<ExamDto> _exams;
+        private ObservableCollection<CategoryDto> _categories;
+        private CategoryDto category;
         private string _errorText;
         private string _currency;
         private ExchangeRateDto _exchangeRate;
@@ -37,14 +40,14 @@ namespace FacCigo.ViewModels.Invoices
         private IServiceProvider _serviceProvider;
         private readonly IEventAggregator EventAggregator;
         private readonly IPatientAppService PatientService;
-        private readonly IExamAppService ExamService;
+        private readonly ICategoryAppService CategoryService;
         private readonly IInvoiceAppService AppService;
         private readonly IExchangeRateAppService rateAppService;
         public bool NewInvoice { get; private set; } = true;
         private InvoiceModel _model;
         private InvoiceLineModel _selectedInvoiceLine;
         public InvoiceInputViewModel(IInvoiceAppService appService,
-            IPatientAppService patientApp, IExamAppService examApp,
+            IPatientAppService patientApp, ICategoryAppService categoryApp,
             IEventAggregator eventAggregator, ISettingProvider setting, IExchangeRateAppService exchangeRateApp, IServiceProvider serviceProvider)
         {
             SettingProvider = setting;
@@ -53,19 +56,19 @@ namespace FacCigo.ViewModels.Invoices
             PatientService = patientApp;
             AppService = appService;
             rateAppService = exchangeRateApp;
-            ExamService = examApp;
+            CategoryService = categoryApp;
             CreateCommand = new DelegateCommand<ICloseable>(Create);
             AddPatientCommand = new DelegateCommand(CreatePatient);
             DeleteInvoiceLineCommand = new DelegateCommand(OnInvoiceLineDeleted);
             SelectedCommand = new DelegateCommand<object[]>(OnItemSelected);
             AddExamCommand = new DelegateCommand<ExamDto>(AddExam);
             Patients = new ObservableCollection<PatientDto>();
-            Patients.AddRange(PatientService.GetListAsync(new PatientGetListInput() { MaxResultCount=500 }).Result.Items);
+            Patients.AddRange(PatientService.GetListAsync().Result);
             Currency = SettingProvider.GetOrNullAsync(FacCigoSettings.InvoiceCurrency).Result;
             Model = new InvoiceModel();
             Model.ReferenceNo = AppService.NextReferenceNo(Model.InvoiceDate.Year).Result;
-            Exams = new ObservableCollection<ExamDto>();
-            Exams.AddRange(ExamService.GetListAsync(new ExamGetListInput()).Result.Items);
+            Categories = new ObservableCollection<CategoryDto>();
+            Categories.AddRange(CategoryService.GetListAsync().Result);
             EventAggregator.GetEvent<PatientAddedEvent>().Subscribe(PatientAdded); 
             ExchangeRate = rateAppService.CurrentExchangeRate().Result;
         }
@@ -85,7 +88,7 @@ namespace FacCigo.ViewModels.Invoices
         {
             try
             {
-                if (Model.HasErrors) return;
+                if (Model.HasErrors || Model.InvoiceLines.Count ==0) return;
               
                 InvoiceDto invoiceDto = await (NewInvoice ? AppService.CreateAsync(Model.GetInput()) : 
                                                         AppService.UpdateAsync(Model.Id, Model.GetInput()));
@@ -115,7 +118,22 @@ namespace FacCigo.ViewModels.Invoices
             get { return _patients; }
             set { SetProperty(ref _patients, value); }
         }
-      
+
+        public ObservableCollection<CategoryDto> Categories
+        {
+            get { return _categories; }
+            set { SetProperty(ref _categories, value); }
+        }
+        public CategoryDto Category
+        {
+            get { return category; }
+            set {
+                
+                SetProperty(ref category, value);
+                Exams = new ObservableCollection<ExamDto>();
+                Exams.AddRange(value.Exams);
+            }
+        }
         public string Currency
         {
             get { return _currency; }
@@ -142,10 +160,10 @@ namespace FacCigo.ViewModels.Invoices
             var dialog = _serviceProvider.GetRequiredService<PatientInputDialog>();
             dialog.ShowDialog();
         }
-        private void AddExam(ExamDto dto)
+        public void AddExam(ExamDto dto)
         {
          SelectedInvoiceLine= Model.InvoiceLines.GetOrAdd(c => c.Exam.Id == dto.Id,
-                                     () => new InvoiceLineModel() { Exam = dto, Amount = ExchangeRate.Rate * dto.Price });
+                                     () => new InvoiceLineModel(dto, ExchangeRate.Rate * dto.Price));
         }
         public ExchangeRateDto ExchangeRate { get { return _exchangeRate; }
             set { SetProperty(ref _exchangeRate, value); } 

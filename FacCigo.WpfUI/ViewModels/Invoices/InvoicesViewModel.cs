@@ -33,7 +33,7 @@ namespace FacCigo.ViewModels.Invoices
             ImportCommand = new DelegateCommand(Print);
             DeleteCommand = new DelegateCommand(Delete);
             Items = new ObservableCollection<InvoiceDto>();
-            Items.AddRange(AppService.GetListAsync(new InvoiceGetListInput()).Result.Items);
+            Items.AddRange(AppService.GetListAsync().Result.OrderByDescending(c=>c.CreationTime));
             EventAggregator.GetEvent<InvoiceUpdatedEvent>().Subscribe(OnInvoiceUpdated);
             EventAggregator.GetEvent<InvoiceDeletedEvent>().Subscribe(OnInvoiceDeleted);
             EventAggregator.GetEvent<InvoiceAddedEvent>().Subscribe(OnInvoiceAdded);

@@ -23,7 +23,7 @@
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="White"  Margin="0 0 0 0" HorizontalAlignment="Stretch" >
                     <ToolBarTray DockPanel.Dock="Right" Margin="10"  HorizontalAlignment="Right" >
                         <ToolBar BorderBrush="LightGray" Margin="0 0 0 0">
-                            <Button  x:Name="btnImport" HorizontalAlignment="Right" Margin="10" Style="{StaticResource FabricButtonStyle}" Command="{Binding ImportCommand }">
+                            <Button  x:Name="btnImport" HorizontalAlignment="Right" Margin="10" Style="{StaticResource FabricButtonStyle}" Command="{Binding AddToInvoiceCommand }">
                                 <fluentui:FabricIcon Icon="BulkUpload"/>
                             </Button>
                             <Button  x:Name="btnDelete" HorizontalAlignment="Right" Margin="10" Style="{StaticResource FabricButtonStyle}" Command="{Binding DeleteCommand}">
@@ -54,6 +54,8 @@
                               ItemsSource="{Binding Items,UpdateSourceTrigger=PropertyChanged}" 
                               HorizontalAlignment="Stretch" 
                               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                              ScrollViewer.VerticalScrollBarVisibility="Visible"
+                              ScrollViewer.CanContentScroll="False"
                               SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                               MinWidth="500">
                         <ListView.View>

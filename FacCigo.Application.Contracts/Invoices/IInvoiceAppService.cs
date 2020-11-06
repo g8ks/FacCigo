@@ -9,5 +9,6 @@ namespace FacCigo
     public interface IInvoiceAppService : ICrudAppService<InvoiceDto, Guid, InvoiceGetListInput, InvoiceInput>,IApplicationService
     {
         Task<string> NextReferenceNo(int year);
+        Task<IList<InvoiceDto>> GetListAsync();
     }
 }

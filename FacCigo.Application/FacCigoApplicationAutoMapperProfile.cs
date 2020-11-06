@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Volo.Abp.AutoMapper;
@@ -52,10 +53,10 @@ namespace FacCigo
                 .Ignore(c => c.ConcurrencyStamp)
                 .IgnoreFullAuditedObjectProperties();
 
-            CreateMap<Invoice,InvoiceDto>()
+            CreateMap<Invoice, InvoiceDto>()
                          .ForMember(dest => dest.PatientName, opt => opt.MapFrom(x => x.Patient.Name))
                          .ForMember(dest => dest.Rate, opt => opt.MapFrom(x => x.ExchangeRate.Rate))
-                         .ForMember(dest=>dest.TotalAmount,opt=>opt.MapFrom(x=>x.InvoiceLines.Sum(c=>c.Amount)*x.ExchangeRate.Rate));
+                         .ForMember(dest => dest.TotalAmount, opt => opt.MapFrom(x => x.InvoiceLines.Sum(c => c.Amount) * x.ExchangeRate.Rate));
             CreateMap<InvoiceLine, InvoiceLineDto>()
                 .ForMember(dest=>dest.ConvertedAmount,opt=>opt.MapFrom(x=>x.Amount*x.Invoice.ExchangeRate.Rate));
            

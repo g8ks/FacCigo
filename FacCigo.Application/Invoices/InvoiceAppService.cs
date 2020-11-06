@@ -35,6 +35,16 @@ namespace FacCigo.Invoices
             return dto;
         }
 
+        public  Task<IList<InvoiceDto>> GetListAsync()
+        {
+            var list = Repository.AsQueryable()
+                       .Include(c => c.Patient)
+                       .Include(c => c.Currency)
+                       .Include(c => c.ExchangeRate)
+                       .Include(c => c.InvoiceLines).ThenInclude(c => c.Exam).ToList();
+            return Task.FromResult(ObjectMapper.Map<IList<Invoice>, IList<InvoiceDto>>(list));
+        }
+
         public  Task<string> NextReferenceNo(int year)
         {
              

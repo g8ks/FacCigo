@@ -4,6 +4,7 @@ using FacCigo.Models;
 using FacCigo.ViewModels.ETL;
 using FacCigo.Views.ETL;
 using FacCigo.Views.Exams;
+using FacCigo.Views.Invoices;
 using Microsoft.Extensions.DependencyInjection;
 using Prism.Commands;
 using Prism.Events;
@@ -34,10 +35,10 @@ namespace FacCigo.ViewModels.Exams
             SelectedCommand = new DelegateCommand<object[]>(OnItemSelected);
             CreateCommand = new DelegateCommand(Create);
             UpdateCommand = new DelegateCommand(Update);
-            ImportCommand = new DelegateCommand(Import);
+            AddToInvoiceCommand = new DelegateCommand(AddToInvoice);
             DeleteCommand = new DelegateCommand(Delete);
             Items = new ObservableCollection<ExamDto>();
-            Items.AddRange( AppService.GetListAsync(new ExamGetListInput() { MaxResultCount=200}).Result.Items);
+            Items.AddRange( AppService.GetListAsync().Result);
             EventAggregator.GetEvent<ExamUpdatedEvent>().Subscribe(OnExamUpdated);
             EventAggregator.GetEvent<ExamDeletedEvent>().Subscribe(OnExamDeleted);
             EventAggregator.GetEvent<ExamAddedEvent>().Subscribe(OnExamAdded);
@@ -55,7 +56,7 @@ namespace FacCigo.ViewModels.Exams
         public DelegateCommand<object[]> SelectedCommand { get; private set; }
         public DelegateCommand CreateCommand { get; private set; }
         public DelegateCommand UpdateCommand { get; private set; }
-        public DelegateCommand ImportCommand { get; private set; }
+        public DelegateCommand AddToInvoiceCommand { get; private set; }
         public DelegateCommand DeleteCommand { get; private set; }
         private void OnItemSelected(object[] selectedItems)
         {
@@ -63,6 +64,13 @@ namespace FacCigo.ViewModels.Exams
             {
                 SelectedItem = (ExamDto)selectedItems.FirstOrDefault();
             }
+        }
+        private void AddToInvoice()
+        {
+            if (SelectedItem == null) return;
+            var dialog = _serviceProvider.GetRequiredService<InvoiceInputDialog>();
+            dialog.addExam(SelectedItem);
+            dialog.ShowDialog();
         }
         private void Create()
         {

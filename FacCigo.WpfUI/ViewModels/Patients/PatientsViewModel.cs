@@ -31,7 +31,7 @@ namespace FacCigo.ViewModels.Patients
             UpdateCommand = new DelegateCommand(Update);
             DeleteCommand = new DelegateCommand(Delete);
             Items = new ObservableCollection<PatientDto>();
-            Items.AddRange(AppService.GetListAsync(new PatientGetListInput()).Result.Items);
+            Items.AddRange(AppService.GetListAsync().Result);
             EventAggregator.GetEvent<PatientUpdatedEvent>().Subscribe(OnPatientUpdated);
             EventAggregator.GetEvent<PatientDeletedEvent>().Subscribe(OnPatientDeleted);
             EventAggregator.GetEvent<PatientAddedEvent>().Subscribe(OnPatientAdded);

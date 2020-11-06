@@ -85,11 +85,16 @@
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0" Orientation="Horizontal">
-                        <ComboBox x:Name="cmBExams" Margin="100 0" ItemsSource="{Binding Path=Exams}" 
+                        <ComboBox x:Name="cmBCategory" Margin="100 0" ItemsSource="{Binding Path=Categories}" 
+                                  SelectedItem="{Binding Category}"
                                   IsTextSearchEnabled="True"
                                   DisplayMemberPath="Name"
                                   Width="200"/>
-                        <Button  Style="{StaticResource FabricPrimaryButtonStyle}" Margin="-30 0"
+                        <ComboBox x:Name="cmBExams" Margin="-10 0" ItemsSource="{Binding Path=Exams}" 
+                                  IsTextSearchEnabled="True"
+                                  DisplayMemberPath="Name"
+                                  Width="200"/>
+                        <Button  Style="{StaticResource FabricPrimaryButtonStyle}" Margin="30 0"
                                  Command="{Binding AddExamCommand}" CommandParameter="{Binding ElementName=cmBExams, Path=SelectedValue}">
                             <fluentui:FabricIcon Icon="AddTo"/>
                         </Button>
